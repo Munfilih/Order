@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Entry - Semaka Markets</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- dom-to-image library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+
+    <!-- Custom Styles -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .order-info p {
+            margin-bottom: 5px;
+        }
+
+        .order-table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        #order-table td {
+            text-align: center;
+        }
+
+        .order-buttons {
+            margin-top: 20px;
+        }
+
+        .btn-custom {
+            background-color: #007bff;
+            color: white;
+            margin-top: 20px;
+            width: 97%;  /* Set the width to your desired value */
+    margin-left: auto;
+    margin-right: auto;  /* Center the buttons */
+
+           
+        }
+
+       
+
+        .btn-custom:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+
+        /* Flex Layout for Left and Right Section */
+        .left-section, .right-section {
+            padding: 15px;
+        }
+
+        .left-section {
+            width: 50%;
+            ;
+        }
+
+        .right-section {
+            width: 50%;
+            overflow-y: auto;
+            max-height: 900px; /* To allow scroll if there are many orders */
+            auto
+        }
+        
+        /* Reduce input width */
+        .form-control, .form-select {
+            width: 95%; /* Adjust width of input and select fields */
+            margin: 0 auto; /* Center the fields */
+            font-size: 14px;
+
+        }
+
+        .form-container {
+            max-width: 100%;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
+            max-height: 800px;
+        }
+        .bold-text {
+    font-weight: bold; /* This makes the text bold */
+}
+        
+        .table{
+            font-size: 14px;
+        }
+
+        #order-table td:nth-child(2) {  /* This targets the second column (Product Name) */
+    text-align: left;
+}
+        #order-table th:nth-child(1), #order-table td:nth-child(1) {
+    min-width: 25px;  /* Set a minimum width but allow it to shrink */
+    text-align: center;
+}
+
+        @media (max-width: 768px) {
+            .left-section, .right-section {
+                width: 100%;/* Stack sections on smaller screens */
+            }
+
+        }
+            /* Capture Button */
+        .capture-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .capture-btn:hover {
+            background-color: #218838;
+        }
+
+    
+    </style>
+
+    <!-- Bootstrap JS and Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+    
+
+    <!-- Custom JS -->
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row">
+            <!-- Left Section for the Product Form -->
+            <div class="left-section">
+                <div class="form-control">
+                <h1 class="mb-4 text-center bold-text">Order Entry - Semaka Markets</h1>
+                <h2 class="text-center">Makka St, Thuqbah</h2>
+
+                <!-- Order Form -->
+                <form id="order-form" class="form-container">
+                    <div class="mb-3">
+                        <label for="vendor" class="form-label">Vendor</label>
+                        <select id="vendor" name="vendor" class="form-select">
+                            <option value="Semaka Jouhara">Semaka Jouhara</option>
+                            <option value="Semaka Sweets">Semaka Sweets</option>
+                            <option value="Alisaad qahtani">Alisaad qahtani</option>
+                            <option value="Others">Others</option>
+                        </select>
+                    
+
+                    <div class="mb-3">
+                        <label for="product-name" class="form-label">Product Name</label>
+                        <input type="text" id="product-name" name="product-name" class="form-control" required>
+                    
+
+                    <div class="mb-3">
+                        <label for="quantity" class="form-label">Quantity</label>
+                        <input type="number" id="quantity" name="quantity" class="form-control" required>
+                    
+
+                    <div class="mb-3">
+                        <label for="unit" class="form-label">Unit</label>
+                        <select id="unit" name="unit" class="form-select">
+                            <option value="PCS">PCS</option>
+                            <option value="OUT">OUT</option>
+                            <option value="CTN">CTN</option>
+                            <option value="BAG">BAG</option>
+                            <option value="KG">KG</option>
+                        </select>
+                   
+
+                    <button type="button" id="add-order-btn" class="btn btn-custom">Add Order</button>
+                    <P><button type="button" id="finish-order-btn" class="btn btn-custom ">Finish Order</button></P>
+                    <p><!-- Send Order Button -->
+<button id="send-order-btn" class="btn btn-custom ">Edit order</button>
+</p>
+<p><button id="clear-order-btn" class="btn btn-custom ">Clear Order</button></p>
+                </form>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+        </div>
+
+            <!-- Right Section for Real-Time Orders List -->
+            <div class="right-section">
+                <div id="order-info" class="order-info mb-4 p-3 bg-light rounded">
+                    <p><strong>Vendor:</strong> <span id="vendor-name"></span></p>
+                    <p><strong>Date:</strong> <span id="order-date"></span></p>
+                </div>
+
+                <!-- Real-Time Order Table -->
+                <div class="order-table-container">
+                    <table id="order-table" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Serial No.</th>
+                                <th scope="col" class="line-font">Product Name</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Unit</th>
+                            </tr>
+                        </thead>
+                        <tbody id="order-table-body">
+                            <!-- Orders will be dynamically added here -->
+                        </tbody>
+                    </table>
+                    <!-- Capture Button -->
+                <button class="capture-btn" id="capture-btn">Send order</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="order-buttons d-flex justify-content-between mt-4">
+            
+            
+
+        </div>
+    </div>
+
+
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+    const addOrderBtn = document.getElementById("add-order-btn");
+    const finishOrderBtn = document.getElementById("finish-order-btn");
+    const clearOrderBtn = document.getElementById("clear-order-btn");
+    const sendOrderBtn = document.getElementById("send-order-btn");
+    const orderForm = document.getElementById("order-form");
+    const orderTableBody = document.getElementById("order-table-body");
+    const vendorName = document.getElementById("vendor-name");
+    const orderDate = document.getElementById("order-date");
+    const captureBtn = document.getElementById("capture-btn");
+
+    let orderCount = 0;
+
+
+// Capture table area and download as image
+captureBtn.addEventListener("click", () => {
+    const tableElement = document.getElementById("order-table");
+
+    // Get vendor name and current date for dynamic filename
+    const vendor = document.getElementById("vendor").value;
+    const today = new Date();
+    const dateString = today.toISOString().split('T')[0];  // Format: "YYYY-MM-DD"
+
+    // Combine vendor name and date for file name
+    const fileName = `${vendor}-order-${dateString}.png`;
+
+                // Use dom-to-image to capture the table element
+                domtoimage.toPng(tableElement)
+                    .then(function (dataUrl) {
+                        // Create a temporary link to trigger the download
+                        const link = document.createElement("a");
+                        link.href = dataUrl;
+                        link.download = fileName; // Set the download file name
+                        link.click(); // Simulate the click to download the image
+                    })
+                    .catch(function (error) {
+                        console.error("Error capturing the table:", error);
+                    });
+            });
+    // Load orders from localStorage and display them
+    const loadOrders = () => {
+        const orders = JSON.parse(localStorage.getItem("orders")) || [];
+        orderCount = orders.length;
+
+        orders.forEach((order, index) => {
+            const newRow = `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${order.productName}</td>
+                    <td>${order.quantity}</td>
+                    <td>${order.unit}</td>
+                </tr>
+            `;
+            orderTableBody.innerHTML += newRow;
+        });
+
+        if (orders.length > 0) {
+            vendorName.textContent = orders[0].vendor;
+            orderDate.textContent = new Date().toLocaleDateString();
+        }
+    };
+
+// Save orders to localStorage
+const saveOrderToLocalStorage = (order) => {
+    const orders = JSON.parse(localStorage.getItem("orders")) || [];
+    orders.push(order);
+    localStorage.setItem("orders", JSON.stringify(orders));
+};
+
+    // Handle field focus after entering product name, quantity, unit
+    const focusNextField = (currentField) => {
+        const vendor = document.getElementById("vendor");
+        const productNameInput = document.getElementById("product-name");
+        const quantityInput = document.getElementById("quantity");
+        const unitSelect = document.getElementById("unit");
+        const addOrderBtn = document.getElementById("add-order-btn");
+
+        if (currentField === vendor) {
+            productNameInput.focus();
+        } else if (currentField === productNameInput) {
+            quantityInput.focus();
+        } else if (currentField === quantityInput) {
+            unitSelect.focus();
+        } else if (currentField === unitSelect) {
+            addOrderBtn.focus();
+        }
+    };
+
+    // Event listener for Enter key to shift focus
+    const handleEnterKey = (event, currentField) => {
+        if (event.key === "Enter" || event.keyCode === 13) {
+            event.preventDefault();
+            focusNextField(currentField);
+        }
+    };
+
+    // Set up event listeners for focusing after input
+    const vendor = document.getElementById("vendor");
+    const productNameInput = document.getElementById("product-name");
+    const quantityInput = document.getElementById("quantity");
+    const unitSelect = document.getElementById("unit");
+
+    // Handle Enter key press to move focus
+    vendor.addEventListener("keydown", (event) => handleEnterKey(event, vendor));
+    productNameInput.addEventListener("keydown", (event) => handleEnterKey(event, productNameInput));
+    quantityInput.addEventListener("keydown", (event) => handleEnterKey(event, quantityInput));
+    unitSelect.addEventListener("keydown", (event) => handleEnterKey(event, unitSelect));
+
+    // Add order to table
+    addOrderBtn.addEventListener("click", () => {
+        const vendor = document.getElementById("vendor").value;
+        const productName = document.getElementById("product-name").value;
+        const quantity = document.getElementById("quantity").value;
+        const unit = document.getElementById("unit").value;
+
+        if (!productName || !quantity || !unit) {
+            alert("Please fill in all fields");
+            return;
+        }
+
+        const newOrder = {
+            vendor: vendor,
+            productName: productName,
+            quantity: quantity,
+            unit: unit
+        };
+
+        saveOrderToLocalStorage(newOrder);
+
+        orderCount++;
+        const newRow = `
+            <tr>
+                <td>${orderCount}</td>
+                <td>${productName}</td>
+                <td>${quantity}</td>
+                <td>${unit}</td>
+            </tr>
+        `;
+
+
+        orderTableBody.innerHTML += newRow;
+
+        // Update order info
+        vendorName.textContent = vendor;
+        orderDate.textContent = new Date().toLocaleDateString();
+
+        // Reset the form (clear product name and quantity fields)
+        document.getElementById("product-name").value = "";
+        document.getElementById("quantity").value = "";
+
+        // Refocus to product name
+        productNameInput.focus();
+    });
+
+
+
+          
+
+
+    // Finish the order
+    finishOrderBtn.addEventListener("click", () => {
+        alert("Order has been completed successfully!");
+        localStorage.removeItem("orders");  // Remove orders from localStorage
+        orderTableBody.innerHTML = "";      // Clear the table
+        vendorName.textContent = "";
+        orderDate.textContent = "";
+        orderCount = 0;
+    });
+
+    // Clear the order form and table
+    clearOrderBtn.addEventListener("click", () => {
+        orderForm.reset();
+        localStorage.removeItem("orders");  // Clear orders in localStorage
+        orderTableBody.innerHTML = "";
+        vendorName.textContent = "";
+        orderDate.textContent = "";
+        orderCount = 0;
+        document.getElementById("product-name").focus();
+    });
+
+    // Load saved orders from localStorage on page load
+    loadOrders();
+
+    // Send order via WhatsApp (changed to open order.html as a pop-up)
+sendOrderBtn.addEventListener("click", () => {
+    // Open order.html as a pop-up with specified width, height, and position
+    const popUp = window.open("order.html", "Order Page", "width=800,height=600,top=100,left=100");
+    
+    // Check if the window was blocked by the browser
+    if (!popUp) {
+        alert("Popup blocked! Please allow popups for this site.");
+    }
+});
+
+});
+
+</script>
+
+</html>
