@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Entry - Semaka Markets</title>
+    <title>Refocus</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -41,9 +41,9 @@
         }
 
         .btn-custom {
-            background-color: #007bff;
+            background-color: #28a745;
             color: white;
-            margin-top: 20px;
+            margin-top: 25px;
             width: 97%;  /* Set the width to your desired value */
     margin-left: auto;
     margin-right: auto;  /* Center the buttons */
@@ -54,7 +54,7 @@
        
 
         .btn-custom:hover {
-            background-color: #0056b3;
+            background-color: #FF0000;
             color: white;
         }
 
@@ -100,6 +100,7 @@
 
         #order-table td:nth-child(2) {  /* This targets the second column (Product Name) */
     text-align: left;
+    text-transform: uppercase
 }
         #order-table th:nth-child(1), #order-table td:nth-child(1) {
     min-width: 25px;  /* Set a minimum width but allow it to shrink */
@@ -126,8 +127,98 @@
         .capture-btn:hover {
             background-color: #218838;
         }
-
+        
+        #product-name{
+        text-transform: uppercase;
+    }
     
+    /* Style for the modal (hidden by default) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0, 0, 0, 0.4); /* Black with opacity */
+        }
+
+        /* Modal content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 0;
+            width: 80%; /* Adjust width as needed */
+            max-width: 760px;
+            height: 600px; /* Fixed height of 800px */
+            overflow-y: auto; /* Enable vertical scrolling if content overflows */
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Top header (like in Windows 11) */
+        .modal-header {
+            background-color: #0078d4; /* Dark gray, similar to Windows 11 title bar */
+            color: white;
+            padding: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 8px 8px 0 0; /* Rounded corners for the top */
+        }
+
+        /*Background style for edit order title*/
+        
+        .editorder{
+            box-shadow: 10px;
+            
+        }
+
+        /* Close button */
+        .close {
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #ff3333; /* Change color on hover */
+            text-decoration: none;
+        }
+
+        /* Form styling inside the modal */
+        .modal-body {
+            padding: 20px;
+        }
+
+        /* Style for form elements */
+        .modal-body input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        .modal-body button {
+            padding: 10px 20px;
+            background-color: #0078d4; /* Windows 11 accent color */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .modal-body button:hover {
+            background-color: #005a9e;
     </style>
 
     <!-- Bootstrap JS and Popper -->
@@ -147,12 +238,12 @@
             <div class="left-section">
                 <div class="form-control">
                 <h1 class="mb-4 text-center bold-text">Order Entry - Semaka Markets</h1>
-              
+                
 
                 <!-- Order Form -->
                 <form id="order-form" class="form-container">
                     <div class="mb-3">
-                        <label for="vendor" class="form-label">Vendor</label>
+                        <label for="vendor" class="form-label">Supplier</label>
                         <select id="vendor" name="vendor" class="form-select">
                             <option value="Semaka Jouhara">Semaka Jouhara</option>
                             <option value="Semaka Sweets">Semaka Sweets</option>
@@ -180,22 +271,21 @@
                             <option value="BAG">BAG</option>
                             <option value="KG">KG</option>
                         </select>
-                   
+                   <div class="btn-pad">
 
-                    <button type="button" id="add-order-btn" class="btn btn-custom">Add Order</button>
-                    <P><button type="button" id="finish-order-btn" class="btn btn-custom ">Finish Order</button></P>
-                    <p><!-- Send Order Button -->
-<button id="send-order-btn" class="btn btn-custom ">Edit order</button>
-</p>
-<p><button id="clear-order-btn" class="btn btn-custom ">Clear Order</button></p>
-                </form>
-            </div>
-            </div>
-            </div>
-            </div>
-            </div>
+            <button type="button" id="add-order-btn" class="btn btn-custom">Add Order</button>
+            <button type="button" id="finish-order-btn" class="btn btn-custom ">Finish Order</button>
+            <button id="openFormBtn" type="button" class="btn btn-custom ">Edit order</button>
+            <button id="clear-order-btn" class="btn btn-custom ">Clear Order</button>
+                   </div>
+             </div>
+             </div>
+             </div>
+             </div>
+             </div>
         </div>
 
+         
             <!-- Right Section for Real-Time Orders List -->
             <div class="right-section">
                 <div id="order-info" class="order-info mb-4 p-3 bg-light rounded">
@@ -232,7 +322,54 @@
         </div>
     </div>
 
+ <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>Edit Order</span>
+                <button class="close" id="closeBtn">&times;</button>
+            </div>
+            <div class="modal-body">
 
+<div id="order-info" class="order-info mb-4 p-3 bg-light rounded">
+                    <p><strong>Vendor:</strong> <span id="vendor-name"></span></p>
+                    <p><strong>Date:</strong> <span id="order-date"></span></p>
+                </div>
+
+                <!-- Real-Time Order Table -->
+                <div class="order-table-container">
+                    <table id="order-table" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Serial No.</th>
+                                <th scope="col" class="line-font">Product Name</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Unit</th>
+                            </tr>
+                        </thead>
+                        <tbody id="order-table-body">
+                            <!-- Orders will be dynamically added here -->
+                        </tbody>
+                    </table>
+                    <!-- Capture Button -->
+                <button class="capture-btn" id="capture-btn">Send order</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="order-buttons d-flex justify-content-between mt-4">
+            
+            
+
+        </div>
+    </div>
+
+            </div>
+        </div>
+        
+    </div>
+                    
 </body>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -247,6 +384,22 @@
     const captureBtn = document.getElementById("capture-btn");
 
     let orderCount = 0;
+
+// Get modal, button, and close elements
+        var modal = document.getElementById("myModal");
+        var openBtn = document.getElementById("openFormBtn");
+        var closeBtn = document.getElementById("closeBtn");
+
+        // When the user clicks the button, open the modal
+        openBtn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        // When the user clicks the close button, close the modal
+        closeBtn.onclick = function() {
+            modal.style.display = "none";
+        }
+
 
 
 // Capture table area and download as image
@@ -390,8 +543,62 @@ const saveOrderToLocalStorage = (order) => {
     });
 
 
+document.addEventListener("DOMContentLoaded", () => {
+    const orderTableBody = document.getElementById("order-table-body");
+    const modal = document.getElementById("myModal");
+    const closeBtn = document.getElementById("closeBtn");
+    const openBtn = document.getElementById("openFormBtn");
+    const saveEditBtn = document.getElementById("save-edit-btn");
 
-          
+    // Fields in the modal
+    const editProductName = document.getElementById("edit-product-name");
+    const editQuantity = document.getElementById("edit-quantity");
+    const editUnit = document.getElementById("edit-unit");
+
+    let currentEditingIndex = -1; // To keep track of the index of the order being edited
+
+    // When the user clicks the 'Edit Order' button, open the modal and load the selected order data
+    openBtn.onclick = function () {
+        modal.style.display = "block";
+        const selectedRow = document.querySelector(".selected-row");
+
+        if (selectedRow) {
+            currentEditingIndex = selectedRow.dataset.index;
+            const order = JSON.parse(localStorage.getItem("orders"))[currentEditingIndex];
+
+            // Populate the modal with the current order details
+            editProductName.value = order.productName;
+            editQuantity.value = order.quantity;
+            editUnit.value = order.unit;
+        }
+    };
+
+    // Close the modal
+    closeBtn.onclick = function () {
+        modal.style.display = "none";
+    };
+
+    
+
+    // Load orders from localStorage and display them
+    const loadOrders = () => {
+        const orders = JSON.parse(localStorage.getItem("orders")) || [];
+        orders.forEach((order, index) => {
+            const newRow = `
+                <tr data-index="${index}">
+                    <td>${index + 1}</td>
+                    <td>${order.productName}</td>
+                    <td>${order.quantity}</td>
+                    <td>${order.unit}</td>
+                </tr>
+            `;
+            orderTableBody.innerHTML += newRow;
+        });
+    };
+
+    loadOrders();
+});
+
 
 
     // Finish the order
