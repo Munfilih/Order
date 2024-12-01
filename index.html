@@ -133,94 +133,6 @@
         #product-name{
         text-transform: uppercase;
     }
-    
-    /* Style for the modal (hidden by default) */
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgba(0, 0, 0, 0.4); /* Black with opacity */
-        }
-
-        /* Modal content */
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 0;
-            width: 80%; /* Adjust width as needed */
-            max-width: 760px;
-            height: 600px; /* Fixed height of 800px */
-            overflow-y: auto; /* Enable vertical scrolling if content overflows */
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Top header (like in Windows 11) */
-        .modal-header {
-            background-color: #0078d4; /* Dark gray, similar to Windows 11 title bar */
-            color: white;
-            padding: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-radius: 8px 8px 0 0; /* Rounded corners for the top */
-        }
-
-        /*Background style for edit order title*/
-        
-        .editorder{
-            box-shadow: 10px;
-            
-        }
-
-        /* Close button */
-        .close {
-            color: white;
-            font-size: 20px;
-            font-weight: bold;
-            border: none;
-            background: none;
-            cursor: pointer;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: #ff3333; /* Change color on hover */
-            text-decoration: none;
-        }
-
-        /* Form styling inside the modal */
-        .modal-body {
-            padding: 20px;
-        }
-
-        /* Style for form elements */
-        .modal-body input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-        }
-
-        .modal-body button {
-            padding: 10px 20px;
-            background-color: #0078d4; /* Windows 11 accent color */
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .modal-body button:hover {
-            background-color: #005a9e;
     </style>
 
     <!-- Bootstrap JS and Popper -->
@@ -277,7 +189,6 @@
 
             <button type="button" id="add-order-btn" class="btn btn-custom">Add Order</button>
             <button type="button" id="finish-order-btn" class="btn btn-custom ">Finish Order</button>
-            <button id="openFormBtn" type="button" class="btn btn-custom ">Edit order</button>
             <button id="clear-order-btn" class="btn btn-custom ">Clear Order</button>
                    </div>
              </div>
@@ -286,7 +197,7 @@
              </div>
              </div>
         </div>
-
+</form>
          
             <!-- Right Section for Real-Time Orders List -->
             <div class="right-section">
@@ -324,57 +235,10 @@
         </div>
     </div>
 
- <!-- The Modal -->
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span>Edit Order</span>
-                <button class="close" id="closeBtn">&times;</button>
-            </div>
-            <div class="modal-body">
 
-<div id="order-info" class="order-info mb-4 p-3 bg-light rounded">
-                    <p><strong>Vendor:</strong> <span id="vendor-name"></span></p>
-                    <p><strong>Date:</strong> <span id="order-date"></span></p>
-                </div>
-
-                <!-- Real-Time Order Table -->
-                <div class="order-table-container">
-                    <table id="order-table" class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col">Serial No.</th>
-                                <th scope="col" class="line-font">Product Name</th>
-                                <th scope="col">Quantity</th>
-                                <th scope="col">Unit</th>
-                            </tr>
-                        </thead>
-                        <tbody id="order-table-body">
-                            <!-- Orders will be dynamically added here -->
-                        </tbody>
-                    </table>
-                    <!-- Capture Button -->
-                <button class="capture-btn" id="capture-btn">Send order</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Buttons -->
-        <div class="order-buttons d-flex justify-content-between mt-4">
-            
-            
-
-        </div>
-    </div>
-
-            </div>
-        </div>
-        
-    </div>
-                    
-</body>
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
+    <script>
+document.addEventListener("DOMContentLoaded", () => {
+    // Get references to the DOM elements
     const addOrderBtn = document.getElementById("add-order-btn");
     const finishOrderBtn = document.getElementById("finish-order-btn");
     const clearOrderBtn = document.getElementById("clear-order-btn");
@@ -387,48 +251,32 @@
 
     let orderCount = 0;
 
-// Get modal, button, and close elements
-        var modal = document.getElementById("myModal");
-        var openBtn = document.getElementById("openFormBtn");
-        var closeBtn = document.getElementById("closeBtn");
+    // Capture table area and download as image
+    captureBtn.addEventListener("click", () => {
+        const tableElement = document.getElementById("order-table");
 
-        // When the user clicks the button, open the modal
-        openBtn.onclick = function() {
-            modal.style.display = "block";
-        }
+        // Get vendor name and current date for dynamic filename
+        const vendor = document.getElementById("vendor").value;
+        const today = new Date();
+        const dateString = today.toISOString().split('T')[0];  // Format: "YYYY-MM-DD"
 
-        // When the user clicks the close button, close the modal
-        closeBtn.onclick = function() {
-            modal.style.display = "none";
-        }
+        // Combine vendor name and date for file name
+        const fileName = `${vendor}-order-${dateString}.png`;
 
-
-
-// Capture table area and download as image
-captureBtn.addEventListener("click", () => {
-    const tableElement = document.getElementById("order-table");
-
-    // Get vendor name and current date for dynamic filename
-    const vendor = document.getElementById("vendor").value;
-    const today = new Date();
-    const dateString = today.toISOString().split('T')[0];  // Format: "YYYY-MM-DD"
-
-    // Combine vendor name and date for file name
-    const fileName = `${vendor}-order-${dateString}.png`;
-
-                // Use dom-to-image to capture the table element
-                domtoimage.toPng(tableElement)
-                    .then(function (dataUrl) {
-                        // Create a temporary link to trigger the download
-                        const link = document.createElement("a");
-                        link.href = dataUrl;
-                        link.download = fileName; // Set the download file name
-                        link.click(); // Simulate the click to download the image
-                    })
-                    .catch(function (error) {
-                        console.error("Error capturing the table:", error);
-                    });
+        // Use dom-to-image to capture the table element
+        domtoimage.toPng(tableElement)
+            .then(function (dataUrl) {
+                // Create a temporary link to trigger the download
+                const link = document.createElement("a");
+                link.href = dataUrl;
+                link.download = fileName; // Set the download file name
+                link.click(); // Simulate the click to download the image
+            })
+            .catch(function (error) {
+                console.error("Error capturing the table:", error);
             });
+    });
+
     // Load orders from localStorage and display them
     const loadOrders = () => {
         const orders = JSON.parse(localStorage.getItem("orders")) || [];
@@ -436,11 +284,11 @@ captureBtn.addEventListener("click", () => {
 
         orders.forEach((order, index) => {
             const newRow = `
-                <tr>
+                <tr data-index="${index}">
                     <td>${index + 1}</td>
-                    <td>${order.productName}</td>
-                    <td>${order.quantity}</td>
-                    <td>${order.unit}</td>
+                    <td class="editable" data-field="productName">${order.productName}</td>
+                    <td class="editable" data-field="quantity">${order.quantity}</td>
+                    <td class="editable" data-field="unit">${order.unit}</td>
                 </tr>
             `;
             orderTableBody.innerHTML += newRow;
@@ -452,14 +300,66 @@ captureBtn.addEventListener("click", () => {
         }
     };
 
-// Save orders to localStorage
-const saveOrderToLocalStorage = (order) => {
-    const orders = JSON.parse(localStorage.getItem("orders")) || [];
-    orders.push(order);
-    localStorage.setItem("orders", JSON.stringify(orders));
-};
+    // Save orders to localStorage
+    const saveOrderToLocalStorage = (order) => {
+        const orders = JSON.parse(localStorage.getItem("orders")) || [];
+        orders.push(order);
+        localStorage.setItem("orders", JSON.stringify(orders));
+    };
 
-    // Handle field focus after entering product name, quantity, unit
+    // Save modified orders back to localStorage
+    const saveEditedOrder = () => {
+        const rows = document.querySelectorAll("tr[data-index]");
+        const updatedOrders = [];
+        
+        rows.forEach(row => {
+            const productName = row.querySelector("[data-field='productName']").textContent;
+            const quantity = row.querySelector("[data-field='quantity']").textContent;
+            const unit = row.querySelector("[data-field='unit']").textContent;
+            const vendor = vendorName.textContent;
+
+            updatedOrders.push({ vendor, productName, quantity, unit });
+        });
+
+        localStorage.setItem("orders", JSON.stringify(updatedOrders));
+    };
+
+    // Make table cells editable on click
+    orderTableBody.addEventListener("click", (event) => {
+        if (event.target.classList.contains("editable")) {
+            const cell = event.target;
+            const field = cell.dataset.field;
+
+            // Only allow editing if it's not an input field
+            if (!cell.querySelector("input")) {
+                const currentValue = cell.textContent;
+                const input = document.createElement("input");
+                input.type = field === "quantity" ? "number" : "text";
+                input.value = currentValue;
+                cell.textContent = "";
+                cell.appendChild(input);
+
+                // Focus and select the input field
+                input.focus();
+
+                // Save the changes when focus is lost
+                input.addEventListener("blur", () => {
+                    cell.textContent = input.value || currentValue;
+                    saveEditedOrder();
+                });
+
+                // Save the changes when the Enter key is pressed
+                input.addEventListener("keydown", (event) => {
+                    if (event.key === "Enter") {
+                        cell.textContent = input.value || currentValue;
+                        saveEditedOrder();
+                    }
+                });
+            }
+        }
+    });
+
+// Handle field focus after entering product name, quantity, unit
     const focusNextField = (currentField) => {
         const vendor = document.getElementById("vendor");
         const productNameInput = document.getElementById("product-name");
@@ -498,6 +398,9 @@ const saveOrderToLocalStorage = (order) => {
     quantityInput.addEventListener("keydown", (event) => handleEnterKey(event, quantityInput));
     unitSelect.addEventListener("keydown", (event) => handleEnterKey(event, unitSelect));
 
+
+
+
     // Add order to table
     addOrderBtn.addEventListener("click", () => {
         const vendor = document.getElementById("vendor").value;
@@ -523,12 +426,11 @@ const saveOrderToLocalStorage = (order) => {
         const newRow = `
             <tr>
                 <td>${orderCount}</td>
-                <td>${productName}</td>
-                <td>${quantity}</td>
-                <td>${unit}</td>
+                <td class="editable" data-field="productName">${productName}</td>
+                <td class="editable" data-field="quantity">${quantity}</td>
+                <td class="editable" data-field="unit">${unit}</td>
             </tr>
         `;
-
 
         orderTableBody.innerHTML += newRow;
 
@@ -543,65 +445,6 @@ const saveOrderToLocalStorage = (order) => {
         // Refocus to product name
         productNameInput.focus();
     });
-
-
-document.addEventListener("DOMContentLoaded", () => {
-    const orderTableBody = document.getElementById("order-table-body");
-    const modal = document.getElementById("myModal");
-    const closeBtn = document.getElementById("closeBtn");
-    const openBtn = document.getElementById("openFormBtn");
-    const saveEditBtn = document.getElementById("save-edit-btn");
-
-    // Fields in the modal
-    const editProductName = document.getElementById("edit-product-name");
-    const editQuantity = document.getElementById("edit-quantity");
-    const editUnit = document.getElementById("edit-unit");
-
-    let currentEditingIndex = -1; // To keep track of the index of the order being edited
-
-    // When the user clicks the 'Edit Order' button, open the modal and load the selected order data
-    openBtn.onclick = function () {
-        modal.style.display = "block";
-        const selectedRow = document.querySelector(".selected-row");
-
-        if (selectedRow) {
-            currentEditingIndex = selectedRow.dataset.index;
-            const order = JSON.parse(localStorage.getItem("orders"))[currentEditingIndex];
-
-            // Populate the modal with the current order details
-            editProductName.value = order.productName;
-            editQuantity.value = order.quantity;
-            editUnit.value = order.unit;
-        }
-    };
-
-    // Close the modal
-    closeBtn.onclick = function () {
-        modal.style.display = "none";
-    };
-
-    
-
-    // Load orders from localStorage and display them
-    const loadOrders = () => {
-        const orders = JSON.parse(localStorage.getItem("orders")) || [];
-        orders.forEach((order, index) => {
-            const newRow = `
-                <tr data-index="${index}">
-                    <td>${index + 1}</td>
-                    <td>${order.productName}</td>
-                    <td>${order.quantity}</td>
-                    <td>${order.unit}</td>
-                </tr>
-            `;
-            orderTableBody.innerHTML += newRow;
-        });
-    };
-
-    loadOrders();
-});
-
-
 
     // Finish the order
     finishOrderBtn.addEventListener("click", () => {
@@ -624,22 +467,25 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("product-name").focus();
     });
 
+    
+
     // Load saved orders from localStorage on page load
     loadOrders();
 
     // Send order via WhatsApp (changed to open order.html as a pop-up)
-sendOrderBtn.addEventListener("click", () => {
-    // Open order.html as a pop-up with specified width, height, and position
-    const popUp = window.open("order.html", "Order Page", "width=800,height=600,top=100,left=100");
-    
-    // Check if the window was blocked by the browser
-    if (!popUp) {
-        alert("Popup blocked! Please allow popups for this site.");
-    }
-});
+    sendOrderBtn.addEventListener("click", () => {
+        // Open order.html as a pop-up with specified width, height, and position
+        const popUp = window.open("order.html", "Order Page", "width=800,height=600,top=100,left=100");
 
+        // Check if the window was blocked by the browser
+        if (!popUp) {
+            alert("Popup blocked! Please allow popups for this site.");
+        }
+    });
 });
 
 </script>
 
+                    
+</body>
 </html>
