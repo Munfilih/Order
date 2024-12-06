@@ -16,9 +16,10 @@
 
     <!-- Custom Styles -->
     <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Arial', sans-serif;
+        
+        body{
+            font-weight: bold;
+            font-family: Arial;
         }
 
         .container {
@@ -29,11 +30,7 @@
             margin-bottom: 5px;
         }
 
-        .order-table th {
-            background-color: #007bff;
-            color: white;
-        }
-
+        
         #order-table td {
             text-align: center;
         }
@@ -43,30 +40,22 @@
         }
 
         .btn-custom {
-            background-color: #28a745;
-            color: white;
+           
             margin-top: 25px;
-            width: 97%;  /* Set the width to your desired value */
+            width: 95%;  /* Set the width to your desired value */
     margin-left: auto;
     margin-right: auto;  /* Center the buttons */
 
-           
-        }
-
-       
-
-        .btn-custom:hover {
-            background-color: #FF0000;
-            color: white;
         }
 
         /* Flex Layout for Left and Right Section */
         .left-section, .right-section {
-            padding: 15px;
+            padding: 10px;
         }
 
         .left-section {
             width: 50%;
+            height: 500px;
             ;
         }
 
@@ -87,10 +76,10 @@
 
         .form-container {
             max-width: 100%;
-            background-color: #fff;
             border-radius: 8px;
-            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
-            max-height: 800px;
+            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.205);
+            max-height: 500px;
+            
         }
         .bold-text {
     font-weight: bold; /* This makes the text bold */
@@ -119,20 +108,52 @@
         .capture-btn {
             margin-top: 20px;
             padding: 10px 20px;
-            background-color: #28a745;
-            color: white;
+            
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
-
-        .capture-btn:hover {
-            background-color: #218838;
-        }
         
         #product-name{
         text-transform: uppercase;
-    }
+    }   
+
+
+/* CSS */
+.button-87 {
+  margin: 10px;
+  padding: 10px 20px;
+  text-align: center;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  border-radius: 10px;
+  display: block;
+  border: 0px;
+  font-weight: 700;
+  box-shadow: 0px 0px 5px -7px #090057;
+  background-image: linear-gradient(45deg, #02213d 0%, #00ffea  51%, #0400ff  100%);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-87:hover {
+  background-position: right center;
+  /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
+}
+
+.button-87:active {
+  transform: scale(0.95);
+}
+
+.mar-btn{
+
+    margin-bottom: 20px;
+}
     </style>
 
     <!-- Bootstrap JS and Popper -->
@@ -146,13 +167,12 @@
 
 <body>
 
-    <div class="container">
-        <div class="row">
+        <div class="container">
+     <div class="row">
             <!-- Left Section for the Product Form -->
             <div class="left-section">
                 <div class="form-control">
                 <h1 class="mb-4 text-center bold-text">Order Entry - Semaka Markets</h1>
-                
 
                 <!-- Order Form -->
                 <form id="order-form" class="form-container">
@@ -187,9 +207,9 @@
                         </select>
                    <div class="btn-pad">
 
-            <button type="button" id="add-order-btn" class="btn btn-custom">Add Order</button>
-            <button type="button" id="finish-order-btn" class="btn btn-custom ">Finish Order</button>
-            <button id="clear-order-btn" class="btn btn-custom ">Clear Order</button>
+            <button type="button" id="add-order-btn" class="btn btn-custom button-87">Add Order</button>
+            <button type="button" id="finish-order-btn" class="btn btn-custom button-87 ">Finish Order</button>
+            <button id="clear-order-btn" class="btn btn-custom button-87 mar-btn ">Clear Order</button>
                    </div>
              </div>
              </div>
@@ -197,7 +217,7 @@
              </div>
              </div>
         </div>
-</form>
+
          
             <!-- Right Section for Real-Time Orders List -->
             <div class="right-section">
@@ -222,7 +242,7 @@
                         </tbody>
                     </table>
                     <!-- Capture Button -->
-                <button class="capture-btn" id="capture-btn">Send order</button>
+                <button class="capture-btn button-87" id="capture-btn">Send order</button>
                 </div>
             </div>
         </div>
@@ -235,9 +255,8 @@
         </div>
     </div>
 
-
-    <script>
-document.addEventListener("DOMContentLoaded", () => {
+<script>
+   document.addEventListener("DOMContentLoaded", () => {
     // Get references to the DOM elements
     const addOrderBtn = document.getElementById("add-order-btn");
     const finishOrderBtn = document.getElementById("finish-order-btn");
@@ -485,7 +504,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 </script>
-
-                    
 </body>
+
 </html>
