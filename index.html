@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -111,7 +112,7 @@
         #product-name{
         text-transform: uppercase;
     }   
-
+    
 
 /* CSS */
 .button-87 {
@@ -178,8 +179,7 @@
                             <option value="Alisaad qahtani">Alisaad qahtani</option>
                             <option value="Others">Others</option>
                         </select>
-                    
-
+                        
                     <div class="mb-3">
                         <label for="product-name" class="form-label">Product Name</label>
                         <input type="text" id="product-name" name="product-name" class="form-control" required>
@@ -204,6 +204,7 @@
             <button type="button" id="add-order-btn" class="btn btn-custom button-87">Add Order</button>
             <button type="button" id="finish-order-btn" class="btn btn-custom button-87 ">Finish Order</button>
             <button id="clear-order-btn" class="btn btn-custom button-87 mar-btn ">Clear Order</button>
+            <a href="app.html" class="btn btn-custom button-87" >Delete items</a>   
                    </div>
              </div>
              </div>
@@ -236,7 +237,8 @@
                         </tbody>
                     </table>
                     <!-- Capture Button -->
-                <button class="capture-btn button-87" id="capture-btn">Send order</button>
+                <button class=" button-87" id="capture-btn">Send order</button>
+                
                 </div>
             </div>
         </div>
@@ -264,6 +266,7 @@
 
     let orderCount = 0;
 
+    
     // Capture table area and download as image
     captureBtn.addEventListener("click", () => {
         const tableElement = document.getElementById("order-table");
@@ -488,7 +491,7 @@
     // Send order via WhatsApp (changed to open order.html as a pop-up)
     sendOrderBtn.addEventListener("click", () => {
         // Open order.html as a pop-up with specified width, height, and position
-        const popUp = window.open("order.html", "Order Page", "width=800,height=600,top=100,left=100");
+        const popUp = window.open("app.html", "Order Page", "width=800,height=600,top=100,left=100");
 
         // Check if the window was blocked by the browser
         if (!popUp) {
